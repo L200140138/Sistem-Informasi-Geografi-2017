@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tugas 4</title>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCz5X-Fxix_7k5HDA5KOd3Whjz9B-O9bqE&sensor=false">
+    </script>
+    <style type="text/css">
+        html { height: 100% }
+        body { height: 100%; margin: 5; }
+        #bagian_peta { width: 800px; height: 500px; }
+    </style>
+    <script type="text/javascript">
+        var map;
+        var polyline;
+        var lineCoordinates = [
+			[-7.550687, 110.822270],[-7.550023, 110.823054],
+			[-7.551046, 110.821870],[-7.552165, 110.821373],
+			[-7.551925, 110.821055],[-7.550376, 110.817086],
+			[-7.549989, 110.813540],[-7.550972, 110.811016],
+			[-7.551891, 110.808503],[-7.551579, 110.807121],
+			[-7.551365, 110.805619],[-7.552687, 110.800786],
+            [-7.554711, 110.798755],[-7.558107, 110.794250],
+			[-7.560325, 110.790338],[-7.559905, 110.788241],
+            [-7.558255, 110.783090],[-7.557415, 110.779723],
+			[-7.557596, 110.777795],[-7.558752, 110.772388],
+        ];
+        function addAnimatedPolyline () {
+            var pointCount = lineCoordinates.length;
+            var linePath = [];
+            for (var i=0; i < pointCount; i++) {
+                var tempLatLng = new google.maps.LatLng(lineCoordinates[i][0], lineCoordinates[i][1]);
+                linePath.push(tempLatLng);
+            }
+            var arrowSymbol = {
+                strokeColor: '#000',
+                scale: 3,
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+            };
+            var lineOptions = {
+                path: linePath,
+                icons: [{
+                    icon: arrowSymbol
+                }],
+                strokeWeight: 3,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8
+            }
+            polyline = new google.maps.Polyline(lineOptions);
+            polyline.setMap(map);
+            animateArrow();
+        }
+        function animateArrow() {
+            var counter = 0;
+            var accessVar = window.setInterval(function() {
+                counter = (counter + 1) % 200;
+                var arrows = polyline.get('icons');
+                arrows[0].offset = (counter / 2) + '%';
+                polyline.set('icons', arrows);
+            }, 50);
+        }
+        function initMap() {
+            google.maps.visualRefresh = true;
+            var mapOptions = {
+                center: new google.maps.LatLng(-7.5486766446052895, 110.78274250030518),
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var mapElement = document.getElementById('bagian_peta');
+            map = new google.maps.Map(mapElement, mapOptions);
+            addAnimatedPolyline();
+        }
+        google.maps.event.addDomListener(window, 'load', initMap);
+    </script>
+
+</head>
+<body class="hold-transition skin-black layout-top-nav">
+    <div class="wrapper">
+
+        <header class="main-header">
+            <nav class="navbar navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                    </div>
+
+                    <!-- /.navbar-custom-menu -->
+                </div>
+                <!-- /.container-fluid -->
+            </nav>
+        </header>       <!-- Full Width Column -->
+        <div class="content-wrapper">
+            <div class="container">             <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-10">
+                        <div class="box box-primary" style="margin-top: 30px;">
+                        <div class="box-header with-border" align="center">
+                            <h3 class="box-title">Tugas 4 </h3>
+							<h3>Animated Lines On GIS</h3>
+                        </div>
+                        <div class="box-body">
+                            <center><div class="box-body table-responsive no-padding" id="bagian_peta">
+                          
+                            </div></center>
+                            </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <div class="col-md-1">
+                        </div>
+                    </div>
+                </section>
+                <!-- /.content -->
+            </div>
+            <!-- /.container -->
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <div class="container">
+                
+            </div>
+            <!-- /.container -->
+        </footer>
+    </div>
+</body>
+</html>
